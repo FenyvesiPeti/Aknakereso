@@ -1,5 +1,5 @@
 let aknaSzam = 0;
-let aknakSzama = 0.5;
+let aknakSzama = 0.1;
 
 function Cell(i, j, w){ 
     this.i = i;
