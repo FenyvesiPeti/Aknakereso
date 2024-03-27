@@ -1,3 +1,11 @@
+var gameStartTime;
+var timerId;
+var timerStarted = false;
+var gameOver = false; // Játék állapotának nyomon követésére
+var safeCellsRevealed = 0; // Nyilvántartjuk, hogy hány biztonságos cellát fedeztek fel
+var totalSafeCells = cols * rows - osszesAkna; // Az összes biztonságos cella számítása
+
+
 //2 dimenziós tömb, amiben eltároljuk az osszes cellát (grid)
 function create2DArray(cols, rows){ 
     var arr = new Array(cols); //minden oszlopra 
@@ -64,15 +72,24 @@ function setup(){
 }
 
 //Egy funkció ami nézi az egérkattintásokat
-function mousePressed(){
-    for (var i = 0; i< cols; i++){
-        for (var j = 0; j < rows; j++){
-            if(grid[i][j].contains(mouseX, mouseY)){ //Ha benna van az egér a cellában kattintáskor
-                if(mouseButton === LEFT){ //Ballklikk
-                    if(!grid[i][j].revealed && !grid[i][j].flagged){ //Ha a cella nincs felfedezve és nincs flaggelve akkor
-                        grid[i][j].reveal(); //felfedezzük
+function mousePressed() {
+    let cellClicked = false; // Tegyük fel, hogy nem történt cellára kattintás
+    for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+            if (grid[i][j].contains(mouseX, mouseY)) { // Ha a kattintás egy cellát érint
+                cellClicked = true; // Jelöljük, hogy történt cellára kattintás
+                if (!timerStarted && !gameOver) {
+                    gameStartTime = new Date();
+                    timerId = setInterval(updateTimer, 1000);
+                    timerStarted = true;
+                }
+
+                // A cellával kapcsolatos többi művelet...
+                if(mouseButton === LEFT) {
+                    if(!grid[i][j].revealed && !grid[i][j].flagged) {
+                        grid[i][j].reveal(); // Felfedezzük a cellát
                     }
-                } else if (mouseButton === RIGHT) { //Jobbklikk
+                } else if (mouseButton === RIGHT) {
                     if (!grid[i][j].revealed) { //Ha egy mező még nincs felfedezve
                         if (!grid[i][j].flagged) {
                             grid[i][j].toggleFlag(); //akkor megflaggeljük
@@ -83,8 +100,10 @@ function mousePressed(){
                         }
                     }
                 }
-            } 
-        } 
+
+                return; // Kilépünk a funkcióból, mivel már kezeltük a kattintást
+            }
+        }
     }
 }
 
@@ -121,6 +140,8 @@ function resetGame(){
             grid[i][j].flagged = false; //Az összes cellát ami flaggelt eltávolítjuk
         }
     }
+    gameOver = false;
+    location.reload(); //Újratölti az oldalt (amíg nincs fixelve)
 
     // Újra elhelyezzük az aknákat (ugyanaz a kód)
     var options = [];
@@ -144,4 +165,27 @@ function resetGame(){
     // Frissítjük az aknák számát megjelenítő elemet
     aknaSzam = osszesAkna; // Az aknák számát is visszaállítjuk az eredeti értékére
     document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam;
+
+}
+
+function updateTimer() {
+    var now = new Date();
+    var elapsed = new Date(now - gameStartTime);
+    var minutes = elapsed.getUTCMinutes();
+    var seconds = elapsed.getUTCSeconds();
+
+    // Formátum: "xx:xx"
+    var formattedTime = (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    document.getElementById("elapsedTime").innerText = formattedTime;
+}
+
+
+function revealAllBombs() {
+    for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+            if (grid[i][j].akna) { // Ha a cella bombát tartalmaz
+                grid[i][j].revealed = true; // Felfedjük a bombát
+            }
+        }
+    }
 }

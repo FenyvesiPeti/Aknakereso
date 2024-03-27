@@ -112,14 +112,29 @@ Cell.prototype.toggleFlag = function(){
 }
 
 //Egy funkció ami felfedi az adott cellát
-Cell.prototype.reveal = function(){
-    this.revealed = true;
-
-    //Elárasztásos kitöltés (flood fill) algoritmus
-    if(this.neighborCount == 0){
-        this.floodFill();
+Cell.prototype.reveal = function() {
+    if (this.revealed || gameOver) {
+        return; // Ha már felfedték vagy a játék véget ért, ne tegyen semmit
     }
-}
+    this.revealed = true;
+    if (this.akna) {
+        revealAllBombs();
+        gameOver = true;
+        clearInterval(timerId);
+        // Itt kezeljük, ha aknára kattintottak. Például megjeleníthetünk egy üzenetet.
+        alert('Sajnálom, vesztettél! Aknára léptél.');
+    } else {
+        // Növeljük a biztonságosan felfedezett cellák számát
+        safeCellsRevealed++;
+        if (this.neighborCount == 0) {
+            this.floodFill();
+        }
+    }
+
+    // Ellenőrizzük a győzelmi feltételt
+    checkWinCondition();
+};
+
 
 //Ugyanazt az elméletet használjuk a flood fillhez mint a szomszédos számokhoz
 Cell.prototype.floodFill = function(){
@@ -135,6 +150,26 @@ Cell.prototype.floodFill = function(){
                     neighbor.reveal();
                 }      
             }
+        }
+    }
+}
+
+
+function checkWinCondition() {
+    var unrevealedCells = 0;
+    for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+            if (!grid[i][j].revealed) {
+                unrevealedCells++;
+            }
+        }
+    }
+
+    if (unrevealedCells === osszesAkna) {
+        if (!gameOver == true) { 
+        gameOver = true;
+        clearInterval(timerId);
+        alert('Gratulálok! Megnyerted a játékot ' + document.getElementById('elapsedTime').textContent + ' alatt!');
         }
     }
 }
