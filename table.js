@@ -141,9 +141,15 @@ function resetGame(){
         }
     }
     gameOver = false;
-    location.reload(); //Újratölti az oldalt (amíg nincs fixelve)
+    //location.reload(); //Újratölti az oldalt (amíg nincs fixelve)
 
-    // Újra elhelyezzük az aknákat (ugyanaz a kód)
+    grid = create2DArray(cols, rows);
+    for (var i = 0; i< cols; i++){ //Minden oszlopra 
+        for (var j = 0; j< rows; j++){ //És minden sorra csinálunk egy cellát
+            grid[i][j] = new Cell(i, j, w); //Legeneráljuk a cellákat, és eltároljuk az indexét hogy hol van a 2dimenziós tömben hol van. (pl:grid[1][3] = 1. oszlop 3. sora)
+        }
+    }
+    // Újra elhelyezzük az aknákat
     var options = [];
     //Készítünk egy ciklust ahol eltároljuk az összes cellát egy tömbben
     for(var i = 0; i < cols; i++){
@@ -161,11 +167,15 @@ function resetGame(){
         options.splice(index, 1); //Kitörli az indexet a tömbökből, így nem lehet ugyanazon a helyen 2 akna (nem lehet újra opció)
         grid[i][j].akna = true;
     }
-
+    // Egy külön for ciklus ami megszámolja
+    for (var i = 0; i< cols; i++){ 
+        for (var j = 0; j< rows; j++){ 
+            grid[i][j].countAknak();
+        }
+    }
     // Frissítjük az aknák számát megjelenítő elemet
     aknaSzam = osszesAkna; // Az aknák számát is visszaállítjuk az eredeti értékére
     document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam;
-
 }
 
 function updateTimer() {
@@ -179,7 +189,6 @@ function updateTimer() {
     document.getElementById("elapsedTime").innerText = formattedTime;
 }
 
-
 function revealAllBombs() {
     for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
@@ -189,3 +198,4 @@ function revealAllBombs() {
         }
     }
 }
+
