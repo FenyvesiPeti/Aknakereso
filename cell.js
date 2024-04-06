@@ -60,7 +60,7 @@ Cell.prototype.show = function(){
                         textColor = color(0); //Alapértelmezett szín
                 }
                 fill(textColor);
-                text(this.neighborCount, this.x + this.w * 0.5, this.y + this.w - 10); //Mozgatjuk a számot a cella közepére
+                text(this.neighborCount, this.x + this.w * 0.5, this.y + this.w - 8); //Mozgatjuk a számot a cella közepére
             }
         }
     } else { //vagy jobb klikkel "flaggeljük"
