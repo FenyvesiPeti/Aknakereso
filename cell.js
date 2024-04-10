@@ -22,11 +22,11 @@ Cell.prototype.show = function(){
             fill(40, 40, 40); //bomba színe
             ellipse(this.x + this.w*0.5, this.y + this.w*0.5, this.w*0.5); //és egy karikát (bombát) rajzolunk bele
         } else{ //vagy üres (lehet szám)
-            fill(166, 166, 166); //színezzük
+            fill(232, 232, 232); //színezzük
             rect(this.x, this.y, this.w, this.w); //a cellát
             if (this.neighborCount > 0) {
                 textAlign(CENTER);
-                textSize(20);
+                textSize(21);
                 //textStyle(BOLD);
                 noStroke();
                 var textColor;
@@ -66,11 +66,11 @@ Cell.prototype.show = function(){
     } else { //vagy jobb klikkel "flaggeljük"
         if(this.flagged){
             
-            fill(166, 166, 166);
+            fill(179, 179, 179);
             rect(this.x, this.y, this.w, this.w);
             text('🚩', this.x + this.w*0.5, this.y + this.w*0.7, this.w*0.3);
         } else { //alapértelmezett cella
-            noFill(); 
+            fill(179, 179, 179); 
             rect(this.x, this.y, this.w, this.w);
         }
     } 

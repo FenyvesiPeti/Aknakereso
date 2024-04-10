@@ -20,13 +20,17 @@ var cols;
 var rows;
 var w = 30; //30pixel x 30pixel méretű négyzet (cella)
 
+var canvasWidth = 630;
+var canvasHeight = 510;
+
 var osszesAkna = 30; //Aknák száma
 var aknaSzam = osszesAkna; //Eltároljuk egy másik változóban hogy mennyi akna van még hátra
 
 //Maga a tábla elkészítése
 function setup(){
-    let canvas = createCanvas(630, 510); //Canvas generálása (oszlopok + w, sorok + w)
+    let canvas = createCanvas(canvasWidth, canvasHeight); //Canvas generálása (oszlopok + w, sorok + w)
     canvas.id('Canvas'); //Adunk neki egy ID-t
+    canvas.parent('canvasPosition'); //Megadjuk a canvas helyét
     canvas = document.getElementById('Canvas'); //hogy letudjuk tiltani a jobb klikk "menüt" amikor a táblában kattintunk
         canvas.addEventListener('contextmenu', function(event) {
             event.preventDefault();
@@ -198,4 +202,3 @@ function revealAllBombs() {
         }
     }
 }
-
