@@ -82,11 +82,7 @@ function mousePressed() {
         for (var j = 0; j < rows; j++) {
             if (grid[i][j].contains(mouseX, mouseY)) { // Ha a kattintás egy cellát érint
                 cellClicked = true; // Jelöljük, hogy történt cellára kattintás
-                if (!timerStarted && !gameOver) {
-                    gameStartTime = new Date();
-                    timerId = setInterval(updateTimer, 1000);
-                    timerStarted = true;
-                }
+                startTimerIfNeeded();
 
                 // A cellával kapcsolatos többi művelet...
                 if(mouseButton === LEFT) {
@@ -177,6 +173,7 @@ function resetGame(){
             grid[i][j].countAknak();
         }
     }
+    resetTimer();
     // Frissítjük az aknák számát megjelenítő elemet
     aknaSzam = osszesAkna; // Az aknák számát is visszaállítjuk az eredeti értékére
     document.getElementById("remainingMines").innerText = aknaSzam + "💣";
@@ -191,6 +188,19 @@ function updateTimer() {
     // Formátum: "xx:xx"
     var formattedTime = (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     document.getElementById("elapsedTime").innerText = formattedTime;
+}
+function resetTimer() { //Egy funkció ami reseteli a timert (reset gomb miatt)
+    clearInterval(timerId);
+    gameStartTime = new Date(); 
+    updateTimer(); 
+    timerStarted = false;
+}
+function startTimerIfNeeded() { //Csak akkor indítsuk el a timert amikor a timer még nincs elindítva + a játéknak még nincs vége
+    if (!timerStarted && !gameOver) { // Csak akkor indítsuk el a timert, ha még nem indult és a játék nem ért véget
+        gameStartTime = new Date(); // Kezdési időpont beállítása
+        timerId = setInterval(updateTimer, 1000); // Időzítő indítása
+        timerStarted = true; // Időzítő indításának állapotának beállítása
+    }
 }
 
 function revealAllBombs() {
