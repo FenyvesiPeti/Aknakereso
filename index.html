@@ -4,33 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Fenyvesi Péter, Kőhegyi Szabolcs, Rozsinszky László">
-    <link rel="icon" type="image/x-icon" href="kepek/flagged.png">
+    <link rel="icon" type="image/x-icon" href="kepek/mine.png">
     <link rel="stylesheet" type="text/css" href="stilus.css">
-    <script src="table.js"></script>
-    <script src="cell.js"></script>
+    <script src="table.js" defer></script>
+    <script src="cell.js" defer></script>
     <title>Aknakereso</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
 </head>
 <body>
-    <h1>Aknakereső</h1>
-    <div class="gameAccesories">
-        <div class="bombresettime"><nav id="remainingMines"></nav></div>
-        <button id="resetButton" class="bombresettime">Új játék</button>
-        <div class="bombresettime"><nav id="elapsedTime">00:00</nav></div>
+    <div class="header" id="header">
+        <div class="header-content">
+            <img id="header-pic" src="kepek/mine.png">
+            <h1>Aknakereső</h1>
+            <button id="howtoplay-button">Hogyan játssz</button>
+        </div>
+    </div>
+    <div class="canvasPosition-border">
+        <div class="gameAccesories">
+            <div class="bombresettime"><nav id="remainingMines"></nav></div>
+            <button id="resetButton" class="bombresettime">Új játék</button>
+            <div class="bombresettime"><nav id="elapsedTime">00:00</nav></div>
+        </div>
+
+        <div id="canvasPosition"></div>       
+    </div>
+    <div id="howtoplay-hide" class="howtoplay">
+        <h1>A játék menete:</h1>
+        <p>Egy mezőkre osztott táblával indul a játék, ezek alatt rejtőzködnek az aknák. <br>
+            A mezők állapotai a következők lehetnek: 
+        </p>
+        <ul>
+            <li><img class="howtoplay-images" src="kepek/start.png">lefedett (alaphelyzet),</li>
+            <li><img class="howtoplay-images" src="kepek/bombcount1.png"><img class="howtoplay-images" src="kepek/bombcount2.png"><img class="howtoplay-images" src="kepek/bombcount3.png">feltárt, szomszédos aknával,</li>
+            <li><img class="howtoplay-images" src="kepek/nobombs.png">feltárt aknamentes,</li>
+            <li><img class="howtoplay-images" src="kepek/bombflagged.png">zászlós (szerintünk akna van alatta),</li>
+            <li><img class="howtoplay-images" src="kepek/bomb.png">feltárt, robbanó aknával</li>
+        </ul>
+        <p>
+            Egy mezőt feltárni kattintással lehet. <br>
+            Ha egy mező feltárult, és mellette akna található, akkor annak darabszámát egy számmal fogja jelezni. <br>
+            Ha a játékos aknamentes környezetű mezőre kattint, 
+            akkor az adott mezőhöz oldal- és sarokhatárosan csatlakozó (aknamentes) mezők mindegyike feltárul, 
+            valamint az így feltáruló aknamentes "szigettel" szomszédos mezők is feltárulnak. 
+        </p>
+        <p>
+            A felsorolás szerinti negydik állapot az egér jobb gombjával érhető el, csupán segítséget nyújt a játékhoz. 
+            A játékot teljesíteni lehet anélkül is, hogy akár csak egy mezőt is megjelölnénk zászlóval, 
+            ez azonban a játékban szerzett jelentős gyakorlatot és az egész játékmenet során mindvégig komoly figyelmet igényel. 
+        </p>
+        <button id="back-to-game">
+            <h2>Vissza a játékhoz</h2>
+        </button>
+    </div>
+    <div class="footer">
+        <div class="footer-content">
+            <p>Készítette: Fenyvesi Péter, Kőhegyi Szabolcs, Rozsinszky László</p>
+        </div>
+        <div class="footer-content">
+            <p>2024.04</p>
+        </div>
     </div>
 </body>
 </html>
 
 <!--
-
     Ami még nincs kész:
-        1. az oldal arculata (html + css)
-        2. dokumentáció
+        Dokumentáció
 
     Plusz dolgok amiket még fejleszhetünk, de nem muszáj:
-        3. Nehézségi szintek (adott méretű tábla, adott méretű aknákkal)
-        4. Amikor egy olyan számos cellára kattintunk bal klikkel ami pl: "1" és körülötte lévő cellákban van minimum 1 cella ami megvan flaggelve, akkor felfedezi az összes cellát az 1-es körül.
-
+        Nehézségi szintek (adott méretű tábla, adott méretű aknákkal)
 -->

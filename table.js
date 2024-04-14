@@ -20,13 +20,17 @@ var cols;
 var rows;
 var w = 30; //30pixel x 30pixel méretű négyzet (cella)
 
+var canvasWidth = 630;
+var canvasHeight = 510;
+
 var osszesAkna = 30; //Aknák száma
 var aknaSzam = osszesAkna; //Eltároljuk egy másik változóban hogy mennyi akna van még hátra
 
 //Maga a tábla elkészítése
 function setup(){
-    let canvas = createCanvas(510, 510); //Canvas generálása (oszlopok + w, sorok + w)
+    let canvas = createCanvas(canvasWidth, canvasHeight); //Canvas generálása (oszlopok + w, sorok + w)
     canvas.id('Canvas'); //Adunk neki egy ID-t
+    canvas.parent('canvasPosition'); //Megadjuk a canvas helyét
     canvas = document.getElementById('Canvas'); //hogy letudjuk tiltani a jobb klikk "menüt" amikor a táblában kattintunk
         canvas.addEventListener('contextmenu', function(event) {
             event.preventDefault();
@@ -65,7 +69,7 @@ function setup(){
         }
     }
 
-    document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam; //Kiírjuk hogy mennyi akna van hátra (még nem működik rendesen)
+    document.getElementById("remainingMines").innerText = aknaSzam + "💣";; //Kiírjuk hogy mennyi akna van hátra (még nem működik rendesen)
     document.getElementById("resetButton").addEventListener("click", function(){ //Egy gomb ami reseteli a játékot
         resetGame();
     });
@@ -78,11 +82,7 @@ function mousePressed() {
         for (var j = 0; j < rows; j++) {
             if (grid[i][j].contains(mouseX, mouseY)) { // Ha a kattintás egy cellát érint
                 cellClicked = true; // Jelöljük, hogy történt cellára kattintás
-                if (!timerStarted && !gameOver) {
-                    gameStartTime = new Date();
-                    timerId = setInterval(updateTimer, 1000);
-                    timerStarted = true;
-                }
+                startTimerIfNeeded();
 
                 // A cellával kapcsolatos többi művelet...
                 if(mouseButton === LEFT) {
@@ -110,14 +110,14 @@ function mousePressed() {
 function increaseMineCount(){ //Növeli az aknaSzam-ot 1-el
     if (aknaSzam > 0){ //ha több mint 0 (nem lehet negatív érték)
         aknaSzam++;
-        document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam;
+        document.getElementById("remainingMines").innerText = aknaSzam + "💣";
     }
 }
 
 function decreaseMineCount(){ //Csökkenti az aknaSzam-ot 1-el
     if (aknaSzam > 0){ //ha több mint 0 (nem lehet negatív érték)
         aknaSzam--;
-        document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam;
+        document.getElementById("remainingMines").innerText = aknaSzam + "💣";
     }
 }
 
@@ -173,9 +173,10 @@ function resetGame(){
             grid[i][j].countAknak();
         }
     }
+    resetTimer();
     // Frissítjük az aknák számát megjelenítő elemet
     aknaSzam = osszesAkna; // Az aknák számát is visszaállítjuk az eredeti értékére
-    document.getElementById("remainingMines").innerText = "Hátralévő 💣 száma: " + aknaSzam;
+    document.getElementById("remainingMines").innerText = aknaSzam + "💣";
 }
 
 function updateTimer() {
@@ -188,6 +189,19 @@ function updateTimer() {
     var formattedTime = (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     document.getElementById("elapsedTime").innerText = formattedTime;
 }
+function resetTimer() { //Egy funkció ami reseteli a timert (reset gomb miatt)
+    clearInterval(timerId);
+    gameStartTime = new Date(); 
+    updateTimer(); 
+    timerStarted = false;
+}
+function startTimerIfNeeded() { //Csak akkor indítsuk el a timert amikor a timer még nincs elindítva + a játéknak még nincs vége
+    if (!timerStarted && !gameOver) { // Csak akkor indítsuk el a timert, ha még nem indult és a játék nem ért véget
+        gameStartTime = new Date(); // Kezdési időpont beállítása
+        timerId = setInterval(updateTimer, 1000); // Időzítő indítása
+        timerStarted = true; // Időzítő indításának állapotának beállítása
+    }
+}
 
 function revealAllBombs() {
     for (var i = 0; i < cols; i++) {
@@ -199,3 +213,22 @@ function revealAllBombs() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const ugrikGomb = document.getElementById('howtoplay-button');
+
+    const celDiv = document.getElementById('howtoplay-hide');
+
+    ugrikGomb.addEventListener('click', function() {
+        celDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ugrikGomb = document.getElementById('back-to-game');
+
+    const celDiv = document.getElementById('header');
+
+    ugrikGomb.addEventListener('click', function() {
+        celDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+});
