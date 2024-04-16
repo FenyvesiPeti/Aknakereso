@@ -44,61 +44,36 @@ canvas{
     margin: auto;
     /*Ha border használunk bugos lesz a kattintás*/
 }
-@supports (-moz-appearance:none){
-  #canvasPosition{
-    margin: auto;
-    width:  630px;
-    height: 510px;
-    border-style: outset;
-    border-width: 5px;
-  }
-  .canvasPosition-border{
-    margin: auto;
-    width: 639.9px;
-    border-style: outset;
-    border-width: 3px;
-  }
-  .gameAccesories{
-    display: flex;
-    justify-content: space-between;
-    margin: auto;
-    width: 630px;
-    align-items: center;
-    /*background-color: rgb(230, 230, 230);*/
-    background-image: linear-gradient(to right, rgb(161, 161, 161) , rgb(201, 201, 202));
-    border-style: ridge;
-    border-width: 5px;
-  }
+
+#canvasPosition{
+  margin: auto;
+  width:  630px;
+  height: 510px;
+  border-style: outset;
+  border-color: gray;
+  border-width: 5px;
 }
-@supports not (-moz-appearance:none){
-  #canvasPosition{
-    margin: auto;
-    width:  630px;
-    height: 510px;
-    border-style: outset;
-    border-color: gray;
-    border-width: 5px;
-  }
-  .canvasPosition-border{
-    margin: auto;
-    width: 639.9px;
-    border-style: outset;
-    border-color: gray;
-    border-width: 3px;
-  }
-  .gameAccesories{
-    display: flex;
-    justify-content: space-between;
-    margin: auto;
-    width: 630px;
-    align-items: center;
-    /*background-color: rgb(230, 230, 230);*/
-    background-image: linear-gradient(to right, rgb(161, 161, 161) , rgb(201, 201, 202));
-    border-style: ridge;
-    border-color: gray;
-    border-width: 5px;
-  }
+.canvasPosition-border{
+  margin: auto;
+  width: 639.9px;
+  border-style: outset;
+  border-color: gray;
+  border-width: 3px;
 }
+.gameAccesories{
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  width: 630px;
+  align-items: center;
+  /*background-color: rgb(230, 230, 230);*/
+  background-image: linear-gradient(to right, rgb(161, 161, 161) , rgb(201, 201, 202));
+  border-style: ridge;
+  border-color: gray;
+  border-width: 5px;
+}
+
+
 .bombresettime{
     flex: 33,33%;
     justify-content: flex-start;
