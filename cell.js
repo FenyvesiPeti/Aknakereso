@@ -116,6 +116,11 @@ Cell.prototype.reveal = function() {
     if (this.revealed || gameOver) {
         return; // Ha már felfedték vagy a játék véget ért, ne tegyen semmit
     }
+    // Ha zászlót fedünk fel, növeljük a bomba számlálót
+    if (this.flagged) {
+        this.toggleFlag();
+        increaseMineCount(); 
+    }
     this.revealed = true;
     if (this.akna) {
         revealAllBombs();
